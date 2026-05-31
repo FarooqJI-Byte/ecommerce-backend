@@ -1,7 +1,0 @@
-target/
-*.class
-*.log
-*.jar
-.idea/
-.vscode/
-*.iml
