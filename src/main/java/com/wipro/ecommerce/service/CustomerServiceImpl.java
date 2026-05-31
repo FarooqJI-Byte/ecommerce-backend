@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wipro.ecommerce.entity.Customer;
+import com.wipro.ecommerce.exceptions.InvalidInputException;
+import com.wipro.ecommerce.exceptions.ResourceNotFoundException;
 import com.wipro.ecommerce.repository.CustomerRepository;
 
 @Service
@@ -25,7 +27,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	public String updateCustomer(Customer customer) {
 		if (customer.getId() == 0) {
-			return "ID is required for update";
+			throw new InvalidInputException("ID is required for update");
 		}
 		Optional<Customer> opt = repo.findById(customer.getId());
 
@@ -33,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
 			repo.save(customer);
 			return "Customer updated successfully";
 		} else {
-			return "No record found with id: " + customer.getId();
+			throw new ResourceNotFoundException("No record found with id: " + customer.getId());
 		}
 
 	}
@@ -43,16 +45,11 @@ public class CustomerServiceImpl implements CustomerService {
 		if (!opt.isEmpty()) {
 			return "Customer successfully deleted";
 		}
-		return "No record found with id: " + id;
+		throw new ResourceNotFoundException("No record found with id: " + id);
 	}
 
 	public Object getCustomerById(int id) {
-		Optional<Customer> opt = repo.findById(id);
-		if (opt.isPresent()) {
-			return opt.get();
-		} else {
-			return "No customer found with id: " + id;
-		}
+		return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + id));
 	}
 
 	public List<Customer> saveAll(List<Customer> customers) {
