@@ -3,14 +3,8 @@ package com.wipro.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.wipro.ecommerce.entity.Cart;
 import com.wipro.ecommerce.service.CartService;
@@ -18,37 +12,37 @@ import com.wipro.ecommerce.service.CartService;
 @RestController
 @RequestMapping("/ecommerce/cart")
 public class CartController {
-	@Autowired
-	CartService service;
 
-	@PostMapping("/add")
-	public Cart addToCart(@RequestBody Cart cart) {
-		return service.addToCart(cart);
-	}
+    @Autowired
+    CartService service;
 
-	@GetMapping("/getall")
-	public List<Cart> getAllCartItem() {
-		return service.getAllCartItem();
-	}
+    @PostMapping("/add")
+    public ResponseEntity<Cart> addToCart(@RequestBody Cart cart) {
+        return ResponseEntity.ok(service.addToCart(cart));
+    }
 
-	@PutMapping("update")
-	public String updateCart(@RequestBody Cart cart) {
-		return service.updateCart(cart);
-	}
+    @GetMapping("/getall")
+    public ResponseEntity<List<Cart>> getAllCartItem() {
+        return ResponseEntity.ok(service.getAllCartItem());
+    }
 
-	@PostMapping("/add/all")
-	public List<Cart> addAllToCart(@RequestBody List<Cart> cart) {
-		return service.addAllToCart(cart);
-	}
+    @PutMapping("/update")
+    public ResponseEntity<String> updateCart(@RequestBody Cart cart) {
+        return ResponseEntity.ok(service.updateCart(cart));
+    }
 
-	@DeleteMapping("/delete")
-	public String deleteById(@PathVariable int cartId) {
-		return service.deleteFromCart(cartId);
-	}
+    @PostMapping("/add/all")
+    public ResponseEntity<List<Cart>> addAllToCart(@RequestBody List<Cart> cart) {
+        return ResponseEntity.ok(service.addAllToCart(cart));
+    }
 
-	@GetMapping
-	public Object getCartById(@PathVariable int cartId) {
-		return service.getCartById(cartId);
-	}
+    @DeleteMapping("/delete/{cartId}")
+    public ResponseEntity<String> deleteById(@PathVariable int cartId) {
+        return ResponseEntity.ok(service.deleteFromCart(cartId));
+    }
 
+    @GetMapping("/{cartId}")
+    public ResponseEntity<?> getCartById(@PathVariable int cartId) {
+        return ResponseEntity.ok(service.getCartById(cartId));
+    }
 }

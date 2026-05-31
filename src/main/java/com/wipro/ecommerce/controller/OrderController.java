@@ -3,6 +3,7 @@ package com.wipro.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.wipro.ecommerce.entity.Orders;
@@ -12,37 +13,36 @@ import com.wipro.ecommerce.service.OrderService;
 @RequestMapping("/ecommerce/orders")
 public class OrderController {
 
-	@Autowired
-	OrderService service;
+    @Autowired
+    OrderService service;
 
-	@PostMapping("/add")
-	public Orders addOrder(@RequestBody Orders order) {
-		return service.addOrder(order);
-	}
+    @PostMapping("/add")
+    public ResponseEntity<Orders> addOrder(@RequestBody Orders order) {
+        return ResponseEntity.ok(service.addOrder(order));
+    }
 
-	@GetMapping("/getall")
-	public List<Orders> getAll() {
-		return service.getAll();
-	}
+    @GetMapping("/getall")
+    public ResponseEntity<List<Orders>> getAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
 
-	@GetMapping("/get/{id}")
-	public Orders getOrderById(@PathVariable int id) {
-		return service.getOrderById(id);
-	}
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getOrderById(@PathVariable int id) {
+        return ResponseEntity.ok(service.getOrderById(id));
+    }
 
-	@PutMapping("/update")
-	public String updateOrder(@RequestBody Orders order) {
-		return service.updateOrder(order);
-	}
+    @PutMapping("/update")
+    public ResponseEntity<String> updateOrder(@RequestBody Orders order) {
+        return ResponseEntity.ok(service.updateOrder(order));
+    }
 
-	@DeleteMapping("/delete/{id}")
-	public String deleteOrder(@PathVariable int id) {
-		return service.deleteOrder(id);
-	}
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable int id) {
+        return ResponseEntity.ok(service.deleteOrder(id));
+    }
 
-	@PostMapping("/addAll")
-	public List<Orders> addAll(@RequestBody List<Orders> orders) {
-		return service.saveAll(orders);
-	}
-
+    @PostMapping("/addAll")
+    public ResponseEntity<List<Orders>> addAll(@RequestBody List<Orders> orders) {
+        return ResponseEntity.ok(service.saveAll(orders));
+    }
 }
